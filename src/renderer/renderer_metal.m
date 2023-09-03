@@ -86,35 +86,36 @@ void renderer_init(GWindow* window){
 void renderer_draw(GWindow* window){
 
     @autoreleasepool {
-        id<CAMetalDrawable> caMetalDrawable = [window->layer nextDrawable];
-        if(!caMetalDrawable) printf("No Drawable!\n");
+        id<CAMetalDrawable> drawable = [window->layer nextDrawable];
 
-        MTLRenderPassDescriptor* mtlRenderPassDescriptor = [MTLRenderPassDescriptor new];
-        mtlRenderPassDescriptor.colorAttachments[0].texture = caMetalDrawable.texture;
-        mtlRenderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionClear;
-        mtlRenderPassDescriptor.colorAttachments[0].storeAction = MTLStoreActionStore;
-        mtlRenderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0.1, 0.1, 0.1, 1.0);
+        if(drawable) {
+            MTLRenderPassDescriptor* mtlRenderPassDescriptor = [MTLRenderPassDescriptor new];
+            mtlRenderPassDescriptor.colorAttachments[0].texture = drawable.texture;
+            mtlRenderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionClear;
+            mtlRenderPassDescriptor.colorAttachments[0].storeAction = MTLStoreActionStore;
+            mtlRenderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0.1, 0.1, 0.1, 1.0);
 
-        id<MTLCommandBuffer> mtlCommandBuffer = [mtlCommandQueue commandBuffer];
+            id<MTLCommandBuffer> mtlCommandBuffer = [mtlCommandQueue commandBuffer];
 
-        id<MTLRenderCommandEncoder> mtlRenderCommandEncoder = [mtlCommandBuffer renderCommandEncoderWithDescriptor:mtlRenderPassDescriptor];
-        [mtlRenderPassDescriptor release];
+            id<MTLRenderCommandEncoder> mtlRenderCommandEncoder = [mtlCommandBuffer renderCommandEncoderWithDescriptor:mtlRenderPassDescriptor];
+            [mtlRenderPassDescriptor release];
 
-        //Drawing
-        [mtlRenderCommandEncoder setViewport:(MTLViewport){0, 0,
-                                                                window->layer.drawableSize.width,
-                                                                window->layer.drawableSize.height,
-                                                                0, 1}];
-        [mtlRenderCommandEncoder setRenderPipelineState:mtlRenderPipelineState];
-        [mtlRenderCommandEncoder setVertexBuffer:vertexBuffer offset:0 atIndex:VertexBufferIndex_Attributes];
-        [mtlRenderCommandEncoder drawPrimitives:MTLPrimitiveTypeTriangle vertexStart:0 vertexCount:3];
-        //endDrawing
+            //Drawing
+            [mtlRenderCommandEncoder setViewport:(MTLViewport){0, 0,
+                                                                    window->layer.drawableSize.width,
+                                                                    window->layer.drawableSize.height,
+                                                                    0, 1}];
+            [mtlRenderCommandEncoder setRenderPipelineState:mtlRenderPipelineState];
+            [mtlRenderCommandEncoder setVertexBuffer:vertexBuffer offset:0 atIndex:VertexBufferIndex_Attributes];
+            [mtlRenderCommandEncoder drawPrimitives:MTLPrimitiveTypeTriangle vertexStart:0 vertexCount:3];
+            //endDrawing
 
 
-        [mtlRenderCommandEncoder endEncoding];
+            [mtlRenderCommandEncoder endEncoding];
 
-        [mtlCommandBuffer presentDrawable:caMetalDrawable];
-        [mtlCommandBuffer commit];
+            [mtlCommandBuffer presentDrawable:drawable];
+            [mtlCommandBuffer commit];
+        }
     }
 }
 

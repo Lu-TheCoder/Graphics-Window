@@ -36,15 +36,21 @@ GWindow* GWindow_Create(int width, int height, const char* title, int flags){
                                                     styleMask:windowStyleMask
                                                     backing:NSBackingStoreBuffered
                                                         defer:NO];
-        
-        [window->window setBackgroundColor: NSColor.redColor];
+
+        [window->window setLevel:NSNormalWindowLevel];
+        // [window->window setBackgroundColor: NSColor.redColor];
         [window->window setTitle: @(title)];
         [window->window setDelegate:window->window_delegate];
         [window->window.contentView setWantsLayer: YES];
         [window->window setAcceptsMouseMovedEvents: YES];
         [window->window setRestorable:NO];
-        [window->window setLevel:NSNormalWindowLevel];
         [window->window makeKeyAndOrderFront: nil];
+
+        window->layer = [CAMetalLayer layer];
+
+        [window->window.contentView setLayer: window->layer];
+        
+        [window->layer setOpaque: YES];
         
         [NSApp finishLaunching];
     

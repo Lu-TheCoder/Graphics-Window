@@ -5,12 +5,12 @@ DEFINES: -std=c2x -DGEXPORT
 
 COMPILER_FLAGS:= -Wall -Werror -Wvla -Wgnu-folding-constant -Wno-missing-braces -ObjC
 INCLUDE_FLAGS:= -Isrc
-LINKER_FLAGS:= -lobjc -framework AppKit -framework QuartzCore -framework Cocoa -framework Foundation
+LINKER_FLAGS:= -lobjc -framework AppKit -framework QuartzCore -framework Cocoa -framework Foundation -framework Metal
 SRC_FILES:= $(shell find src -type f \( -name "*.c" -o -name "*.m" \))
 DIRECTORIES:= $(shell find src -type d)
 OBJ_FILES := $(SRC_FILES:%=$(OBJ_DIR)/%.o)
 
-all: scaffold compile link run
+all: scaffold compile link run compileShaders
 
 .PHONY: scaffold
 scaffold:
@@ -45,3 +45,11 @@ $(OBJ_DIR)/%.m.o: %.m
 run:
 	@echo --- Launching "Engine" --- 
 	./bin/app
+
+.PHONY: compileShaders
+compileShaders:
+	@xcrun -sdk macosx metal -c src/shaders/shaders.metal -o bin/shaders.air
+	@xcrun -sdk macosx metallib bin/shaders.air -o bin/shaders.metallib
+
+#run this if u have issues compiling metal shaders
+#sudo xcode-select --switch /Applications/Xcode-beta.app/Contents/Developer

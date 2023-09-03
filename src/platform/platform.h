@@ -27,6 +27,7 @@ typedef struct GWindow{
    ApplicationDelegate* app_delegate;
    WindowDelegate* window_delegate;
    bool should_close;
+   bool isResized;
 }GWindow;
 
 

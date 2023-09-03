@@ -23,7 +23,18 @@
 
 - (void)windowDidResize:(NSNotification *)notification
 {
-    NSLog(@"Did Resize");
+    CGSize viewSize = handle->window.contentView.bounds.size;
+    NSSize newDrawableSize = [handle->window.contentView convertSizeToBacking:viewSize];
+    handle->layer.drawableSize = newDrawableSize;
+    handle->layer.contentsScale = handle->window.contentView.window.backingScaleFactor;
+    
+    //TODO: dont know if it belongs here..
+    [handle->window.contentView setLayer:handle->layer];
+
+    // NSLog(@"View Size: %f", viewSize.width);
+    // NSLog(@"Drawable Size: %f", newDrawableSize.width);
+    handle->isResized = true;
+    // NSLog(@"Did Resize");
 }
 
 - (void)windowDidMiniaturize:(NSNotification *)notification

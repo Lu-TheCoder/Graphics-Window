@@ -10,7 +10,7 @@ SRC_FILES:= $(shell find src -type f \( -name "*.c" -o -name "*.m" \))
 DIRECTORIES:= $(shell find src -type d)
 OBJ_FILES := $(SRC_FILES:%=$(OBJ_DIR)/%.o)
 
-all: scaffold compile link run compileShaders
+all: scaffold compileShaders compile link run
 
 .PHONY: scaffold
 scaffold:
@@ -48,6 +48,7 @@ run:
 
 .PHONY: compileShaders
 compileShaders:
+	@echo --- Compiling Metal Shaders ---
 	@xcrun -sdk macosx metal -c src/shaders/shaders.metal -o bin/shaders.air
 	@xcrun -sdk macosx metallib bin/shaders.air -o bin/shaders.metallib
 

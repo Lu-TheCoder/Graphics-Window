@@ -4,11 +4,20 @@ OBJ_DIR:= obj
 DEFINES: -std=c2x -DGEXPORT
 
 COMPILER_FLAGS:= -Wall -Werror -Wvla -Wgnu-folding-constant -Wno-missing-braces -ObjC
-INCLUDE_FLAGS:= -Isrc
+INCLUDE_FLAGS:= -I./$(ASSEMBLY)
 LINKER_FLAGS:= -lobjc -framework AppKit -framework QuartzCore -framework Cocoa -framework Foundation -framework Metal
-SRC_FILES:= $(shell find src -type f \( -name "*.c" -o -name "*.m" \))
-DIRECTORIES:= $(shell find src -type d)
+SRC_FILES:= $(shell find $(ASSEMBLY) -type f \( -name "*.c" -o -name "*.m" \))
+DIRECTORIES:= $(shell find $(ASSEMBLY) -type d)
 OBJ_FILES := $(SRC_FILES:%=$(OBJ_DIR)/%.o)
+
+ifeq ($(TARGET), release)
+# release
+COMPILER_FLAGS += -MD -O2
+else
+# debug
+COMPILER_FLAGS += -g -MD -O0
+COMPILER_FLAGS += -g
+endif
 
 all: scaffold compileShaders compile link run
 
@@ -53,4 +62,4 @@ compileShaders:
 	@xcrun -sdk macosx metallib bin/shaders.air -o bin/shaders.metallib
 
 #run this if u have issues compiling metal shaders
-#sudo xcode-select --switch /Applications/Xcode-beta.app/Contents/Developer
+#sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer

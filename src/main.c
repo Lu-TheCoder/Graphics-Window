@@ -4,7 +4,7 @@
 
 int main(){
 
-    GWindow* window = GWindow_Create(600, 400, "My Window", 0);
+    GWindow* window = GWindow_Create(600, 400, "My Graphics Engine (Metal)", 0);
 
     renderer_init(window);
 

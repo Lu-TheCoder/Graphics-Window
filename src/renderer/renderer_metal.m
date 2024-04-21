@@ -43,9 +43,14 @@ void renderer_init(GWindow* window){
 
     // Create Vertex Buffer
     float vertexData[] = { // x, y, r, g, b, a
-         0.5f, -0.5f, 1.f, 0.f, 0.f, 1.f,
-         0.0f,  0.5f, 0.f, 1.f, 0.f, 1.f,
-        -0.5f, -0.5f, 0.f, 0.f, 1.f, 1.f
+         0.5f, -0.5f, 1.f, 0.5f, 1.f, 1.f,
+         0.5f,  0.5f, 0.f, 1.f, 0.f, 1.f,
+        -0.5f, -0.5f, 0.f, 0.f, 1.f, 1.f,
+
+        -0.5f, -0.5f, 0.f, 0.f, 1.f, 1.f,
+        -0.5f,  0.5f, 0.f, 1.f, 0.f, 1.f,
+        0.5f,  0.5f, 0.f, 1.f, 0.f, 1.f,
+
     };
 
     vertexBuffer = [mtlDevice newBufferWithBytes:vertexData length:sizeof(vertexData)
@@ -107,7 +112,7 @@ void renderer_draw(GWindow* window){
                                                                     0, 1}];
             [mtlRenderCommandEncoder setRenderPipelineState:mtlRenderPipelineState];
             [mtlRenderCommandEncoder setVertexBuffer:vertexBuffer offset:0 atIndex:VertexBufferIndex_Attributes];
-            [mtlRenderCommandEncoder drawPrimitives:MTLPrimitiveTypeTriangle vertexStart:0 vertexCount:3];
+            [mtlRenderCommandEncoder drawPrimitives:MTLPrimitiveTypeTriangle vertexStart:0 vertexCount:6];
             //endDrawing
 
 

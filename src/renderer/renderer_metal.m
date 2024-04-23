@@ -3,6 +3,7 @@
 #include <Metal/Metal.h>
 #include <QuartzCore/CAMetalLayer.h>
 #include "shaderInterface.h"
+#include "core/logger.h"
 
 static id<MTLDevice> mtlDevice;
 static id<MTLCommandQueue> mtlCommandQueue;
@@ -16,7 +17,7 @@ void renderer_init(GWindow* window){
     _window = window;
 
     mtlDevice = MTLCreateSystemDefaultDevice();
-    printf("System default GPU: %s\n", mtlDevice.name.UTF8String);
+    LINFO("GPU: %s\n", mtlDevice.name.UTF8String);
 
     mtlCommandQueue = [mtlDevice newCommandQueue];
 

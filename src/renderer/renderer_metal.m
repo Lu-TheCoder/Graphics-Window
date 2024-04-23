@@ -17,7 +17,7 @@ void renderer_init(GWindow* window){
     _window = window;
 
     mtlDevice = MTLCreateSystemDefaultDevice();
-    LINFO("GPU: %s\n", mtlDevice.name.UTF8String);
+    LINFO("GPU: %s", mtlDevice.name.UTF8String);
 
     mtlCommandQueue = [mtlDevice newCommandQueue];
 

@@ -80,7 +80,7 @@ void GWindow_Poll_Events(){
 }
 
 void GWindow_Destroy(GWindow* window){
-
+    free(window);
 }
 
 bool GWindow_Should_Close(GWindow* window){

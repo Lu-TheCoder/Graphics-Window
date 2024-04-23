@@ -9,7 +9,11 @@ static id<MTLCommandQueue> mtlCommandQueue;
 static id<MTLBuffer> vertexBuffer;
 static id<MTLRenderPipelineState> mtlRenderPipelineState;
 
+static GWindow* _window;
+
 void renderer_init(GWindow* window){
+
+    _window = window;
 
     mtlDevice = MTLCreateSystemDefaultDevice();
     printf("System default GPU: %s\n", mtlDevice.name.UTF8String);
@@ -88,10 +92,10 @@ void renderer_init(GWindow* window){
 
 }
 
-void renderer_draw(GWindow* window){
+void renderer_draw(){
 
     @autoreleasepool {
-        id<CAMetalDrawable> drawable = [window->layer nextDrawable];
+        id<CAMetalDrawable> drawable = [_window->layer nextDrawable];
 
         if(drawable) {
             MTLRenderPassDescriptor* mtlRenderPassDescriptor = [MTLRenderPassDescriptor new];
@@ -107,8 +111,8 @@ void renderer_draw(GWindow* window){
 
             //Drawing
             [mtlRenderCommandEncoder setViewport:(MTLViewport){0, 0,
-                                                                    window->layer.drawableSize.width,
-                                                                    window->layer.drawableSize.height,
+                                                                    _window->layer.drawableSize.width,
+                                                                    _window->layer.drawableSize.height,
                                                                     0, 1}];
             [mtlRenderCommandEncoder setRenderPipelineState:mtlRenderPipelineState];
             [mtlRenderCommandEncoder setVertexBuffer:vertexBuffer offset:0 atIndex:VertexBufferIndex_Attributes];
@@ -125,5 +129,5 @@ void renderer_draw(GWindow* window){
 }
 
 void renderer_destroy(){
-
+    
 }

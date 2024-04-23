@@ -8,7 +8,7 @@ This window can be used for Game Engines or custom games that dont rely on GLFW.
 
 
 ## Goal
-The goal with this project was to build a base implementation that can be easily built upon and extended to suit the needs of your rendering projects on MacOS.
+The goal with this project was to build a base implementation of a Window that supports Metal that can be easily built upon and extended to suit the needs of your rendering projects on MacOS.
 
 # How to Run
 This Project is meant to run only on MacOS.
